@@ -2,11 +2,14 @@
 #include <iomanip>
 #include <termios.h>
 #include <sys/time.h>
+#include <cstdlib>
 #include <signal.h>
 #include <unistd.h> // usleep
 #include <stdio.h> // getchar()
 #include <math.h> // fabs
 #include "keypress.h"
+
+#define VERSION "1.0 (2016-03-20)"
 
 using namespace std;
 
@@ -40,11 +43,32 @@ void interrupthandler(int s)
 } // interrupthandler()
 
 
-int main()
+void helptext()
+{
+  cout << "Usage: bpmtap [-h help] [-v version]\n";
+  cout << "Tap keyboard to find a song's beats-per-minute\n";
+  cout << "Press 'q' to quit" << endl;
+  exit(0);
+} // helptext()
+
+
+void versiontext()
+{
+  cout << "Current version: " << VERSION << endl;
+  exit(0);
+} // versiontext()
+
+
+int main(int argc,char **argv)
 {
 char nextchar='@';
 long interval=0;
 double tempo=100,averagetempo=100;
+
+  if(argc>1){
+    if(string(argv[1])=="-h") helptext();
+    if(string(argv[1])=="-v") versiontext();
+  } // if arguments
 
   struct sigaction signalhandler;
   signalhandler.sa_handler=interrupthandler;

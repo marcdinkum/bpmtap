@@ -18,7 +18,9 @@ bpmtap: $(SRC) $(INC)
 
 install:
 	cp bpmtap $(PREFIX)/bin
-	cp bpmtap.1.gz $(PREFIX)/man/man1
+	gzip -k bpmtap.1
+	mv bpmtap.1.gz $(PREFIX)/man/man1
+	mandb
 
 .cpp.o:
 	$(CPP) -c $< $(CFLAGS)
