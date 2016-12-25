@@ -63,12 +63,14 @@ int main(int argc,char **argv)
 {
 char nextchar='@';
 long interval=0;
-double tempo=100,averagetempo=100;
+double tempo=100,averagetempo=100,halftempo=tempo/2;
 
   if(argc>1){
     if(string(argv[1])=="-h") helptext();
     if(string(argv[1])=="-v") versiontext();
   } // if arguments
+
+  cout << "Press a key or q to quit\n";
 
   struct sigaction signalhandler;
   signalhandler.sa_handler=interrupthandler;
@@ -103,8 +105,10 @@ double tempo=100,averagetempo=100;
     // adapt to large change immediately, otherwise use running average
     if(fabs(tempo-averagetempo)/averagetempo > 0.2) averagetempo=tempo;
     else averagetempo += 0.1*(tempo-averagetempo);
+    halftempo=tempo/2; // for convenience also display half tempo
     cout << setw(5) << fixed << setprecision(1) << right <<
-            averagetempo << " BPM -- (" <<
+            averagetempo << " / " <<
+            halftempo << " BPM -- (" <<
             interval << " msec)" << endl;
   } // while
 
