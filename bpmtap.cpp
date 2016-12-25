@@ -63,7 +63,8 @@ int main(int argc,char **argv)
 {
 char nextchar='@';
 long interval=0;
-double tempo=100,averagetempo=100,halftempo=tempo/2;
+double tempo=100,averagetempo=100;
+double half_average=50;
 
   if(argc>1){
     if(string(argv[1])=="-h") helptext();
@@ -105,10 +106,10 @@ double tempo=100,averagetempo=100,halftempo=tempo/2;
     // adapt to large change immediately, otherwise use running average
     if(fabs(tempo-averagetempo)/averagetempo > 0.2) averagetempo=tempo;
     else averagetempo += 0.1*(tempo-averagetempo);
-    halftempo=tempo/2; // for convenience also display half tempo
+    half_average += 0.2*(tempo/2 - half_average); // also display half tempo
     cout << setw(5) << fixed << setprecision(1) << right <<
             averagetempo << " / " <<
-            halftempo << " BPM -- (" <<
+            half_average << " BPM -- (" <<
             interval << " msec)" << endl;
   } // while
 
